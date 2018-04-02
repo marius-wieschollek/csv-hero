@@ -1,12 +1,11 @@
 {
   "name": "csv-hero",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A powerful CSV parser",
   "main": "dist/csv-hero.js",
   "scripts": {
     "watch": "webpack --mode=development --watch --progress",
-    "build": "webpack --mode=production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode=production"
   },
   "keywords": [
     "csv",

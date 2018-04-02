@@ -1,9 +1,6 @@
 let webpack = require('webpack');
 
-
-module.exports = (env) => {
-    console.log('Production: ', false);
-
+module.exports = () => {
     return {
         entry  : {
             'csv-hero': `${__dirname}/src/csv-hero.js`
