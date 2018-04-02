@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Csv Hero Demo</title>
+    <script src="dist/csv-hero.js"></script>
+    <style>
+        body {
+            max-width   : 960px;
+            margin      : 0 auto;
+            font-family : sans-serif;
+            background  : #f5f6fa;
+            color       : #4b6584;
+        }
+
+        table {
+            border-spacing  : 0;
+            border-collapse : collapse;
+            width           : 100%;
+        }
+
+        th {
+            border           : 1px solid #2bcbba;
+            background-color : #2bcbba;
+            padding          : 5px;
+        }
+
+        td {
+            border     : 1px solid #2bcbba;
+            padding    : 2px;
+            background : #f5f6fa;
+            color      : #4b6584;
+        }
+
+        td > div {
+            max-height : 60px;
+            max-width  : 200px;
+            overflow   : auto;
+        }
+
+        td.value {
+            font-family : monospace;
+            text-align  : right;
+        }
+
+        .data-table {
+            max-width : 100%;
+            overflow  : auto;
+        }
+
+        form {
+            background-color : #0fb9b1;
+            padding          : 1em;
+            border-radius    : 3px;
+            overflow         : hidden;
+            margin-bottom    : 1em;
+        }
+
+        form table tr td:first-of-type {
+            width : 75%;
+        }
+
+        form table tr td:last-of-type {
+            text-align : right;
+        }
+
+        form table tr td:only-child {
+            text-align : left;
+            width      : 100%;
+        }
+
+        select {
+            width : 100%;
+        }
+
+        textarea {
+            width      : 99%;
+            display    : block;
+            min-height : 100px;
+        }
+
+        input[type=submit] {
+            margin-top : 1em;
+            width      : 100%;
+            cursor     : pointer;
+        }
+
+        .result {
+            max-height       : 2em;
+            overflow         : hidden;
+            padding          : 0 1em 2em;
+            background-color : #0fb9b1;
+            margin-bottom    : 1em;
+            border-radius    : 3px;
+            color            : #f5f6fa;
+        }
+
+        .result h2 {
+            cursor : pointer;
+        }
+
+        .result.open {
+            max-height : initial;
+        }
+
+        #try,
+        #result {
+            margin-top : 2em;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Welcome to CSV Hero</h1>
+<p>
+    CSV Hero will save your day when you need to handle any kind of CSV file in your project!
+    Feel free to try it out below.
+</p>
+
+<h1 id="try">Try it out</h1>
+<div class="tab-1">
+    <form id="csv-hero-input">
+        <table>
+            <tbody>
+            <tr>
+                <td><label for="input-type">Select your input type</label></td>
+                <td>
+                    <select name="input-type" id="input-type">
+                        <option value="file" selected>File</option>
+                        <option value="text">Text</option>
+                        <option value="url">URL</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="option-file">
+                <td><label for="input-file">Select a file</label></td>
+                <td><input name="file" id="input-file" type="file" accept="text/csv" multiple/></td>
+            </tr>
+            <tr id="option-text">
+                <td colspan="2">
+                    <label for="input-text">Paste your CSV</label>
+                    <textarea name="text" id="input-text"></textarea>
+                </td>
+            </tr>
+            <tr id="option-url">
+                <td><label for="input-url">Url</label></td>
+                <td><input name="url" id="input-url" value=""/></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <form id="csv-hero-config">
+        <table>
+            <tbody>
+            <tr>
+                <td><label for="config-delimiter">Delimiter</label></td>
+                <td><input name="delimiter" id="config-delimiter" value="auto"/></td>
+            </tr>
+            <tr>
+                <td><label for="config-newLine">New Line</label></td>
+                <td>
+                    <select name="newLine" id="config-newLine">
+                        <option value="auto" selected>auto</option>
+                        <option value="\n">\n</option>
+                        <option value="\r">\r</option>
+                        <option value="\r\n">\r\n</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="config-quotes">Quote Character</label></td>
+                <td><input name="quotes" id="config-quotes" value="&quot;"/></td>
+            </tr>
+            <tr>
+                <td><label for="config-escape">Escape Character</label></td>
+                <td><input name="escape" id="config-escape" value="&quot;"/></td>
+            </tr>
+            <tr>
+                <td><label for="config-strictSpaces">Strict Space Checking</label></td>
+                <td><input name="strictSpaces" id="config-strictSpaces" type="checkbox" checked/></td>
+            </tr>
+            <tr>
+                <td><label for="config-strictQuotes">Strict Quote Checking</label></td>
+                <td><input name="strictQuotes" id="config-strictQuotes" type="checkbox" checked/></td>
+            </tr>
+            <tr>
+                <td><label for="config-skipEmptyRows">Skip empty rows</label></td>
+                <td><input name="skipEmptyRows" id="config-skipEmptyRows" type="checkbox" checked/></td>
+            </tr>
+            <tr>
+                <td><label for="config-skipRowsOfEmptyFields">Skip rows of empty fields</label></td>
+                <td><input name="skipRowsOfEmptyFields" id="config-skipRowsOfEmptyFields" type="checkbox"/></td>
+            </tr>
+            <tr>
+                <td><label for="config-trimFields">Trim Values</label></td>
+                <td><input name="trimFields" id="config-trimFields" type="checkbox"/></td>
+            </tr>
+            <tr>
+                <td><label for="config-ignoreErrors">Ignore Errors</label></td>
+                <td><input name="ignoreErrors" id="config-ignoreErrors" type="checkbox"/></td>
+            </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="Parse My CSV">
+    </form>
+</div>
+
+<h1 id="result">Check the result</h1>
+<div id="result-viewer">
+
+</div>
+
+<script>
+    document.getElementById('csv-hero-config').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let input  = getInput(),
+            config = getConfig();
+
+        for(let i = 0; i < input.length; i++) {
+            CsvHero.parse(input[i], config)
+                   .then(ParserResult)
+                   .catch(ParserResult);
+        }
+    }, false);
+
+    document.getElementById('input-type').addEventListener('change', function(e) {
+        e.preventDefault();
+        updateInputType();
+    }, false);
+
+    function updateInputType() {
+        document.querySelectorAll('#option-url, #option-file, #option-text').forEach(function(el) {
+            el.style.display = 'none';
+        });
+        let type = document.getElementById('input-type').value;
+        document.getElementById(`option-${type}`).style.display = 'table-row';
+    }
+
+    updateInputType();
+
+    function getConfig() {
+        let form   = document.forms[1],
+            config = {};
+        for(let i = 0; i < form.length; i++) {
+            let field = form[i];
+            if(!field.name) continue;
+
+            if(field.type === 'checkbox') {
+                config[field.name] = field.checked;
+            } else {
+                config[field.name] = field.value;
+            }
+        }
+        return config;
+    }
+
+    function getInput() {
+        let type = document.getElementById('input-type').value;
+
+        if(type === 'file') {
+            return document.getElementById('input-file').files;
+        }
+        return [document.getElementById(`input-${type}`).value];
+    }
+
+
+    function ParserResult(result) {
+
+        function createSource() {
+            let html    = createConfigSource()
+                          + createErrorSource()
+                          + createDataSource(),
+                element = document.createElement('div'),
+                viewer  = document.getElementById('result-viewer'),
+                id      = viewer.children.length + 1;
+
+            element.setAttribute('id', `result-${id}`);
+            element.setAttribute('class', 'result open');
+            element.innerHTML = `<h2>Result ${id}</h2>${html}`;
+            element.querySelector('h2').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById(`result-${id}`).classList.toggle('open');
+            });
+            viewer.insertBefore(element, viewer.children[0]);
+            location.hash = `#result-${id}`;
+        }
+
+        function createConfigSource() {
+            let html = '';
+            for(let key in result.config) {
+                if(!result.config.hasOwnProperty(key)) continue;
+                let value = JSON.stringify(result.config[key]);
+                html += `<tr><td class="key">${key}</td><td class="value">${value}</td></tr>`;
+            }
+            return `<div class="config"><h3>Configuration</h3><table><tbody><tr><th>Key</th><th>Value</th></tr>${html}</tbody></table></div>`;
+        }
+
+        function createDataSource() {
+
+            let header = '', data = '';
+            if(result.data.length > 0) {
+                for(let i in result.data[0]) {
+                    if(result.data[0].hasOwnProperty(i)) header += `<th>${i}</th>`;
+                }
+            }
+
+            for(let i = 0; i < result.data.length; i++) {
+                let line = result.data[i],
+                    html = '';
+
+                for(let i in line) {
+                    if(!line.hasOwnProperty(i)) continue;
+                    let value = line[i]
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+
+                    html += `<td><div>${value}</div></td>`;
+                }
+
+                data += `<tr>${html}</tr>`;
+            }
+
+            return `<div class="data"><h3>Data</h3>
+                    <div class="data-table"><table><tbody><tr>${header}</tr>${data}</tbody></table></div>
+                    </div>`;
+        }
+
+        function createErrorSource() {
+            if(result.errors.length === 0) return '';
+
+            let html = '';
+            for(let i = 0; i < result.errors.length; i++) {
+                let error = result.errors[i];
+                html += `<tr><td>${error.type}</td><td>${error.name}</td><td>${error.message}</td><td>${error.line}</td><td>${error.character}</td></tr>`;
+            }
+
+            return `<div class="errors"><h3>Errors</h3><div class="data-table"><table><tbody>
+                    <tr><th>Type</th><th>Name</th><th>Message</th><th>Line</th><th>Column</th></tr>
+                    ${html}</tbody></table></div></div>`;
+        }
+
+        createSource();
+        console.log(result);
+    }
+</script>
+</body>
+</html>
