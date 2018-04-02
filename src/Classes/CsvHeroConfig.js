@@ -64,13 +64,21 @@ export default class CsvHeroConfig {
      *
      * @returns {string}
      */
+    get comment() {
+        return this._config.comment;
+    }
+
+    /**
+     *
+     * @returns {string}
+     */
     get encoding() {
         return this._config.encoding;
     }
 
     /**
      *
-     * @returns {bool}
+     * @returns {boolean}
      */
     get strictSpaces() {
         return this._config.strictSpaces;
@@ -78,7 +86,7 @@ export default class CsvHeroConfig {
 
     /**
      *
-     * @returns {bool}
+     * @returns {boolean}
      */
     get strictQuotes() {
         return this._config.strictQuotes;
@@ -86,7 +94,31 @@ export default class CsvHeroConfig {
 
     /**
      *
-     * @returns {bool}
+     * @returns {boolean}
+     */
+    get strictRows() {
+        return this._config.strictRows;
+    }
+
+    /**
+     *
+     * @returns {number}
+     */
+    get rowSize() {
+        return this._config.rowSize;
+    }
+
+    /**
+     *
+     * @param {number} rowSize
+     */
+    set rowSize(rowSize) {
+        this._config.rowSize = rowSize;
+    }
+
+    /**
+     *
+     * @returns {boolean}
      */
     get skipEmptyRows() {
         return this._config.skipEmptyRows;
@@ -94,7 +126,7 @@ export default class CsvHeroConfig {
 
     /**
      *
-     * @returns {bool}
+     * @returns {boolean}
      */
     get skipRowsOfEmptyFields() {
         return this._config.skipRowsOfEmptyFields;
@@ -102,7 +134,7 @@ export default class CsvHeroConfig {
 
     /**
      *
-     * @returns {bool}
+     * @returns {boolean}
      */
     get trimFields() {
         return this._config.trimFields;
@@ -110,7 +142,55 @@ export default class CsvHeroConfig {
 
     /**
      *
-     * @returns {bool}
+     * @returns {boolean}
+     */
+    get castTypes() {
+        return this._config.castTypes;
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    get mapFields() {
+        return this._config.mapFields;
+    }
+
+    /**
+     *
+     * @returns {Array}
+     */
+    get fieldMapping() {
+        return this._config.fieldMapping;
+    }
+
+    /**
+     *
+     * @param {Array} fieldMapping
+     */
+    set fieldMapping(fieldMapping) {
+        this._config.fieldMapping = fieldMapping;
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    get skipHeader() {
+        return this._config.skipHeader;
+    }
+
+    /**
+     *
+     * @returns {number}
+     */
+    get maxRows() {
+        return this._config.maxRows;
+    }
+
+    /**
+     *
+     * @returns {boolean}
      */
     get ignoreErrors() {
         return this._config.ignoreErrors;
@@ -126,12 +206,20 @@ export default class CsvHeroConfig {
             newLine              : 'auto',
             quotes               : '"',
             escape               : '"',
+            comment              : '',
             encoding             : 'UTF-8',
             strictSpaces         : true,
             strictQuotes         : true,
+            strictRows           : false,
+            trimFields           : false,
+            castTypes            : false,
+            mapFields            : false,
+            fieldMapping         : [],
+            rowSize              : -1,
+            maxRows              : -1,
+            skipHeader           : false,
             skipEmptyRows        : true,
             skipRowsOfEmptyFields: false,
-            trimFields                 : false,
             ignoreErrors         : false
         };
         this.parseConfig(userConfig);

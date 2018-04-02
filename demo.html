@@ -32,9 +32,18 @@
             color      : #4b6584;
         }
 
+        td.index {
+            border           : 1px solid #2bcbba;
+            background-color : #2bcbba;
+            padding          : 0 5px;
+            text-align       : right;
+            width            : 1%;
+            color            : #f5f6fa;
+        }
+
         td > div {
-            max-height : 60px;
-            max-width  : 200px;
+            max-height : 100px;
+            max-width  : 250px;
             overflow   : auto;
         }
 
@@ -177,6 +186,10 @@
                 <td><input name="escape" id="config-escape" value="&quot;"/></td>
             </tr>
             <tr>
+                <td><label for="config-comment">Comment Character</label></td>
+                <td><input name="comment" id="config-comment" value=""/></td>
+            </tr>
+            <tr>
                 <td><label for="config-strictSpaces">Strict Space Checking</label></td>
                 <td><input name="strictSpaces" id="config-strictSpaces" type="checkbox" checked/></td>
             </tr>
@@ -185,7 +198,23 @@
                 <td><input name="strictQuotes" id="config-strictQuotes" type="checkbox" checked/></td>
             </tr>
             <tr>
-                <td><label for="config-skipEmptyRows">Skip empty rows</label></td>
+                <td><label for="config-strictRows">Strict Row Sizes</label></td>
+                <td><input name="strictRows" id="config-strictRows" type="checkbox" checked/></td>
+            </tr>
+            <tr title="Set the expected row size. Otherwise the first row will be used as reference">
+                <td><label for="config-rowSize">Row Size</label></td>
+                <td><input name="rowSize" id="config-rowSize" type="number" value="-1"/></td>
+            </tr>
+            <tr title="Stop parsing after X rows">
+                <td><label for="config-maxRows">Maximum Rows</label></td>
+                <td><input name="maxRows" id="config-maxRows" type="number" value="-1"/></td>
+            </tr>
+            <tr title="Skip the first row">
+                <td><label for="config-skipHeader">Skip Header Row</label></td>
+                <td><input name="skipHeader" id="config-skipHeader" type="checkbox"/></td>
+            </tr>
+            <tr>
+                <td><label for="config-skipEmptyRows">Skip empty Rows</label></td>
                 <td><input name="skipEmptyRows" id="config-skipEmptyRows" type="checkbox" checked/></td>
             </tr>
             <tr>
@@ -195,6 +224,18 @@
             <tr>
                 <td><label for="config-trimFields">Trim Values</label></td>
                 <td><input name="trimFields" id="config-trimFields" type="checkbox"/></td>
+            </tr>
+            <tr>
+                <td><label for="config-castTypes">Cast Basic Types</label></td>
+                <td><input name="ignoreErrors" id="config-castTypes" type="checkbox"/></td>
+            </tr>
+            <tr>
+                <td><label for="config-mapFields">Map Fields</label></td>
+                <td><input name="mapFields" id="config-mapFields" type="checkbox"/></td>
+            </tr>
+            <tr title="Separate fields with commas. Leave empty to use header">
+                <td><label for="config-fieldMapping">Field Mapping</label></td>
+                <td><input name="fieldMapping" id="config-fieldMapping" type="text"/></td>
             </tr>
             <tr>
                 <td><label for="config-ignoreErrors">Ignore Errors</label></td>
@@ -249,10 +290,15 @@
 
             if(field.type === 'checkbox') {
                 config[field.name] = field.checked;
+            } else if(field.type === 'number') {
+                config[field.name] = parseInt(field.value);
             } else {
                 config[field.name] = field.value;
             }
         }
+
+        if(config.fieldMapping.length !== 0) config.fieldMapping = config.fieldMapping.split(',');
+
         return config;
     }
 
@@ -299,7 +345,7 @@
 
         function createDataSource() {
 
-            let header = '', data = '';
+            let header = '<th>#</th>', data = '';
             if(result.data.length > 0) {
                 for(let i in result.data[0]) {
                     if(result.data[0].hasOwnProperty(i)) header += `<th>${i}</th>`;
@@ -320,7 +366,7 @@
                     html += `<td><div>${value}</div></td>`;
                 }
 
-                data += `<tr>${html}</tr>`;
+                data += `<tr><td class="index">${i + 1}</td>${html}</tr>`;
             }
 
             return `<div class="data"><h3>Data</h3>
@@ -334,11 +380,11 @@
             let html = '';
             for(let i = 0; i < result.errors.length; i++) {
                 let error = result.errors[i];
-                html += `<tr><td>${error.type}</td><td>${error.name}</td><td>${error.message}</td><td>${error.line}</td><td>${error.character}</td></tr>`;
+                html += `<tr><td class="index">${i + 1}</td><td>${error.name}</td><td>${error.message}</td><td>${error.line}</td><td>${error.character}</td></tr>`;
             }
 
             return `<div class="errors"><h3>Errors</h3><div class="data-table"><table><tbody>
-                    <tr><th>Type</th><th>Name</th><th>Message</th><th>Line</th><th>Column</th></tr>
+                    <tr><th>#</th><th>Name</th><th>Message</th><th>Line</th><th>Column</th></tr>
                     ${html}</tbody></table></div></div>`;
         }
 

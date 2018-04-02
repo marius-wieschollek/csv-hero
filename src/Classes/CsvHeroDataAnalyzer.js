@@ -5,7 +5,7 @@ export default class CsvHeroDataAnalyzer {
      * @param {CsvHeroConfig} config
      */
     constructor(config) {
-        this._delimiters = [',', ';', ' ', '\t'];
+        this._delimiters = [',', ';', '|', '\t', ' '];
         this._newLines = ['\r\n', '\n', '\r'];
         this._quotes = ['"', '\''];
         this._config = config;
