@@ -218,27 +218,27 @@ export default class CsvHeroConfig {
      */
     constructor(userConfig) {
         this._config = {
-            delimiter            : 'auto',
-            newLine              : 'auto',
-            quotes               : '"',
-            escape               : '"',
-            comment              : '',
-            encoding             : 'UTF-8',
-            strictSpaces         : true,
-            strictQuotes         : true,
-            strictRows           : false,
-            trimFields           : false,
-            castTypes            : false,
-            mapFields            : false,
-            fieldMapping         : [],
-            rowSize              : -1,
-            maxRows              : -1,
-            skipHeader           : false,
-            skipEmptyRows        : true,
-            skipRowsOfEmptyFields: false,
-            worker               : false,
-            workerUrl            : null,
-            ignoreErrors         : false
+            delimiter         : 'auto',
+            newLine           : 'auto',
+            quotes            : '"',
+            escape            : '"',
+            comment           : '',
+            encoding          : 'UTF-8',
+            strictSpaces      : true,
+            strictQuotes      : true,
+            strictRows        : false,
+            trimFields        : false,
+            castTypes         : false,
+            mapFields         : false,
+            fieldMapping      : [],
+            rowSize           : -1,
+            maxRows           : -1,
+            skipHeader        : false,
+            skipEmptyRows     : true,
+            skipEmptyFieldRows: false,
+            worker            : false,
+            workerUrl         : null,
+            ignoreErrors      : false
         };
         this.parseConfig(userConfig);
     }
@@ -248,8 +248,8 @@ export default class CsvHeroConfig {
      * @param {Object} config
      */
     parseConfig(config) {
-        for (let key in config) {
-            if (!config.hasOwnProperty(key) || !this._config.hasOwnProperty(key)) continue;
+        for(let key in config) {
+            if(!config.hasOwnProperty(key) || !this._config.hasOwnProperty(key)) continue;
 
             this._config[key] = config[key];
         }

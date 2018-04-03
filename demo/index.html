@@ -130,7 +130,8 @@
 <p>
     <img src="CsvHero.svg" alt="">
     CSV Hero will save your day when you need to handle any kind of CSV file in your project!
-    Feel free to try it out below.
+    <br>CSV Hero can parse your csv files even when no one else can.
+    <br>Feel free to try it out below.
 </p>
 
 <h1 id="try">Try it out</h1>
@@ -174,7 +175,7 @@
                 <td><input name="delimiter" id="config-delimiter" value="auto"/></td>
             </tr>
             <tr>
-                <td><label for="config-newLine">New Line</label></td>
+                <td><label for="config-newLine">New line character</label></td>
                 <td>
                     <select name="newLine" id="config-newLine">
                         <option value="auto" selected>auto</option>
@@ -185,63 +186,63 @@
                 </td>
             </tr>
             <tr>
-                <td><label for="config-quotes">Quote Character</label></td>
+                <td><label for="config-quotes">Quote character</label></td>
                 <td><input name="quotes" id="config-quotes" value="&quot;"/></td>
             </tr>
             <tr>
-                <td><label for="config-escape">Escape Character</label></td>
+                <td><label for="config-escape">Escape character</label></td>
                 <td><input name="escape" id="config-escape" value="&quot;"/></td>
             </tr>
             <tr>
-                <td><label for="config-comment">Comment Character</label></td>
+                <td><label for="config-comment">Comment character</label></td>
                 <td><input name="comment" id="config-comment" value=""/></td>
             </tr>
             <tr>
-                <td><label for="config-strictSpaces">Strict Space Checking</label></td>
+                <td><label for="config-strictSpaces">Strict spaces checking</label></td>
                 <td><input name="strictSpaces" id="config-strictSpaces" type="checkbox" checked/></td>
             </tr>
             <tr>
-                <td><label for="config-strictQuotes">Strict Quote Checking</label></td>
+                <td><label for="config-strictQuotes">Strict quote checking</label></td>
                 <td><input name="strictQuotes" id="config-strictQuotes" type="checkbox" checked/></td>
             </tr>
             <tr>
-                <td><label for="config-strictRows">Strict Row Sizes</label></td>
+                <td><label for="config-strictRows">Strict row sizes</label></td>
                 <td><input name="strictRows" id="config-strictRows" type="checkbox" checked/></td>
             </tr>
             <tr title="Set the expected row size. Otherwise the first row will be used as reference">
-                <td><label for="config-rowSize">Row Size</label></td>
+                <td><label for="config-rowSize">Row size</label></td>
                 <td><input name="rowSize" id="config-rowSize" type="number" value="-1"/></td>
             </tr>
             <tr title="Stop parsing after X rows">
-                <td><label for="config-maxRows">Maximum Rows</label></td>
+                <td><label for="config-maxRows">Maximum rows</label></td>
                 <td><input name="maxRows" id="config-maxRows" type="number" value="-1"/></td>
             </tr>
             <tr title="Skip the first row">
-                <td><label for="config-skipHeader">Skip Header Row</label></td>
+                <td><label for="config-skipHeader">Skip header row</label></td>
                 <td><input name="skipHeader" id="config-skipHeader" type="checkbox"/></td>
             </tr>
             <tr>
-                <td><label for="config-skipEmptyRows">Skip empty Rows</label></td>
+                <td><label for="config-skipEmptyRows">Skip empty rows</label></td>
                 <td><input name="skipEmptyRows" id="config-skipEmptyRows" type="checkbox" checked/></td>
             </tr>
             <tr>
-                <td><label for="config-skipRowsOfEmptyFields">Skip rows of empty fields</label></td>
-                <td><input name="skipRowsOfEmptyFields" id="config-skipRowsOfEmptyFields" type="checkbox"/></td>
+                <td><label for="config-skipEmptyFieldRows">Skip rows of empty fields</label></td>
+                <td><input name="skipEmptyFieldRows" id="config-skipEmptyFieldRows" type="checkbox"/></td>
             </tr>
             <tr>
-                <td><label for="config-trimFields">Trim Values</label></td>
+                <td><label for="config-trimFields">Trim values</label></td>
                 <td><input name="trimFields" id="config-trimFields" type="checkbox"/></td>
             </tr>
             <tr>
-                <td><label for="config-castTypes">Cast Basic Types</label></td>
+                <td><label for="config-castTypes">Cast basic types</label></td>
                 <td><input name="ignoreErrors" id="config-castTypes" type="checkbox"/></td>
             </tr>
             <tr>
-                <td><label for="config-mapFields">Map Fields</label></td>
+                <td><label for="config-mapFields">Map fields</label></td>
                 <td><input name="mapFields" id="config-mapFields" type="checkbox"/></td>
             </tr>
             <tr title="Separate fields with commas. Leave empty to use header">
-                <td><label for="config-fieldMapping">Field Mapping</label></td>
+                <td><label for="config-fieldMapping">Field mapping</label></td>
                 <td><input name="fieldMapping" id="config-fieldMapping" type="text"/></td>
             </tr>
             <tr>
