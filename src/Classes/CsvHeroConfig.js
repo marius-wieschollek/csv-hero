@@ -192,6 +192,22 @@ export default class CsvHeroConfig {
      *
      * @returns {boolean}
      */
+    get worker() {
+        return this._config.worker;
+    }
+
+    /**
+     *
+     * @returns {string}
+     */
+    get workerUrl() {
+        return this._config.workerUrl;
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
     get ignoreErrors() {
         return this._config.ignoreErrors;
     }
@@ -220,6 +236,8 @@ export default class CsvHeroConfig {
             skipHeader           : false,
             skipEmptyRows        : true,
             skipRowsOfEmptyFields: false,
+            worker               : false,
+            workerUrl            : null,
             ignoreErrors         : false
         };
         this.parseConfig(userConfig);
@@ -230,8 +248,8 @@ export default class CsvHeroConfig {
      * @param {Object} config
      */
     parseConfig(config) {
-        for(let key in config) {
-            if(!config.hasOwnProperty(key) || !this._config.hasOwnProperty(key)) continue;
+        for (let key in config) {
+            if (!config.hasOwnProperty(key) || !this._config.hasOwnProperty(key)) continue;
 
             this._config[key] = config[key];
         }

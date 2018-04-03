@@ -5,22 +5,70 @@ import CsvHeroTextStreamer from '@js/CsvHeroTextStreamer';
 
 export default class CsvHero {
 
+    constructor() {
+        this._isWorker = typeof WorkerGlobalScope !== 'undefined';
+        if (!this._isWorker) {
+            this._workerUrl = document.currentScript.src;
+        } else {
+            self.onmessage = (event) => {
+                let config = new CsvHeroConfig(event.data.config);
+                CsvHero._runLocal(event.data.file, config, self.postMessage, self.postMessage);
+            }
+        }
+    }
+
     // noinspection JSUnusedGlobalSymbols
     /**
      *
-     * @param {File} file
+     * @param {File|string} file
      * @param {Object} userConfig
      * @returns {Promise}
      */
     parse(file, userConfig = {}) {
         return new Promise(async (resolve, reject) => {
-            let config = new CsvHeroConfig(userConfig),
-                reader = CsvHero._getStreamer(file, config),
-                parser = new CsvHeroParser(reader, config);
+            let config = new CsvHeroConfig(userConfig);
 
-            await parser.parse();
-            CsvHero._createResult(parser, config, resolve, reject);
+            if (config.worker && !this._isWorker) {
+                this._runWorker(file, config, resolve, reject);
+            } else {
+                CsvHero._runLocal(file, config, resolve, reject);
+            }
         });
+    }
+
+
+    /**
+     *
+     * @param {File|string} file
+     * @param {CsvHeroConfig} config
+     * @param {function} success
+     * @param {function} fail
+     * @private
+     */
+    _runWorker(file, config, success, fail) {
+        let worker = new Worker(config.workerUrl !== null ? config.workerUrl:this._workerUrl);
+
+        worker.onmessage = (event) => {
+            let result = event.data;
+            result.hasErrors && !result.config.ignoreErrors ? fail(result):success(result);
+        };
+        worker.postMessage({file, config: config.config});
+    }
+
+    /**
+     *
+     * @param {File|string} file
+     * @param {CsvHeroConfig} config
+     * @param {function} success
+     * @param {function} fail
+     * @private
+     */
+    static async _runLocal(file, config, success, fail) {
+        let reader = CsvHero._getStreamer(file, config),
+            parser = new CsvHeroParser(reader, config);
+
+        await parser.parse();
+        CsvHero._createResult(parser, config, success, fail);
     }
 
     /**
@@ -39,13 +87,7 @@ export default class CsvHero {
             hasErrors: parser.errors.length !== 0
         };
 
-
-
-        if(result.hasErrors && !config.ignoreErrors) {
-            fail(result);
-            return;
-        }
-        success(result);
+        result.hasErrors && !result.config.ignoreErrors ? fail(result):success(result);
     }
 
     /**
@@ -55,7 +97,7 @@ export default class CsvHero {
      * @returns {CsvHeroFileStreamer}
      */
     static _getStreamer(file, config) {
-        if(file instanceof File) {
+        if (file instanceof File) {
             return new CsvHeroFileStreamer(file, config);
         }
         return new CsvHeroTextStreamer(file, config);

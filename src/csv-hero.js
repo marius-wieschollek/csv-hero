@@ -11,8 +11,8 @@ import CsvHero from '@js/CsvHero';
         // like Node.
         module.exports = new CsvHero();
     }
-    else if(window) {
+    else if(self) {
         // Browser globals
-        window.CsvHero = new CsvHero();
+        self.CsvHero = new CsvHero();
     }
 }());
