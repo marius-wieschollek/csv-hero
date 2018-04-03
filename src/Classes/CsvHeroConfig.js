@@ -62,6 +62,14 @@ export default class CsvHeroConfig {
 
     /**
      *
+     * @param {string} escape
+     */
+    set escape(escape) {
+        this._config.escape = escape;
+    }
+
+    /**
+     *
      * @returns {string}
      */
     get comment() {
@@ -128,8 +136,8 @@ export default class CsvHeroConfig {
      *
      * @returns {boolean}
      */
-    get skipRowsOfEmptyFields() {
-        return this._config.skipRowsOfEmptyFields;
+    get skipEmptyFieldRows() {
+        return this._config.skipEmptyFieldRows;
     }
 
     /**
@@ -220,8 +228,8 @@ export default class CsvHeroConfig {
         this._config = {
             delimiter         : 'auto',
             newLine           : 'auto',
-            quotes            : '"',
-            escape            : '"',
+            quotes            : 'auto',
+            escape            : 'auto',
             comment           : '',
             encoding          : 'UTF-8',
             strictSpaces      : true,

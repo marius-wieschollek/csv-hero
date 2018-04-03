@@ -1,7 +1,7 @@
 {
   "name": "csv-hero",
   "version": "0.1.0",
-  "description": "A powerful CSV parser",
+  "description": "CSV Hero will save your day and parse all the CSV files you have",
   "main": "dist/csv-hero.js",
   "scripts": {
     "watch": "webpack --mode=development --watch --progress",

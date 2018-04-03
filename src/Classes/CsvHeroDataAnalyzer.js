@@ -62,7 +62,7 @@ export default class CsvHeroDataAnalyzer {
      * @private
      */
     _findBestPattern(text, patterns) {
-        let search = CsvHeroDataAnalyzer._processPatterns(patterns, search);
+        let search = CsvHeroDataAnalyzer._processPatterns(patterns);
         this._gatherPatternStatistics(text, search);
         return CsvHeroDataAnalyzer._determineBestMatch(search);
     }

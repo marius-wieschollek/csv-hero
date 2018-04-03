@@ -85,6 +85,7 @@ export default class CsvHeroParser {
             };
         }
         if(!error.name) error.name = 'ParserError';
+        if(!error.message || !error.message.length) error.message = error.name;
         if(!error.character) error.character = this._status.currentCharacter - this._status.lineStart - 1;
         error.line = this._status.lineCount;
 
@@ -160,7 +161,7 @@ export default class CsvHeroParser {
     _handleStash() {
         if(this._status.stash) {
             if(this._status.waitForDelimiter && this._config.strictQuotes) {
-                this._logError({name: 'InvalidQuotes', message: 'Invalid trailing quotes'});
+                this._logError({name: 'InvalidQuotes', message: 'Invalid trailing quote in quoted field'});
             }
             this._flushStash();
         }
@@ -366,7 +367,7 @@ export default class CsvHeroParser {
                 if(mapping[i] !== undefined) {
                     mappedRow[mapping[i]] = row[i];
                 } else {
-                    mappedRow[`field${i}`] = row[i];
+                    mappedRow[`field_${i}`] = row[i];
                 }
             }
             return mappedRow;
@@ -418,7 +419,7 @@ export default class CsvHeroParser {
      * @private
      */
     _isEmptyFieldRow(row) {
-        if(this._config.skipRowsOfEmptyFields) {
+        if(this._config.skipEmptyFieldRows) {
             let isEmpty = true;
             for(let i = 0; i < row.length; i++) {
                 if(row[i].length !== 0) {
