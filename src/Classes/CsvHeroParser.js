@@ -45,14 +45,17 @@ export default class CsvHeroParser {
         }
 
         if(this._config.newLine === 'auto') {
-            this._config.newLine = analyzer.detectLineEnding(data);
+            this._config.newLine = '\n';
+            let newLine = analyzer.detectLineEnding(data);
+            if(newLine === false) {
+                this._logError({name: 'DetectionError', message: 'Unable to detect line ending'});
+            } else {
+                this._config.newLine = newLine;
+            }
         }
-        if(this._config.delimiter === 'auto') {
-            this._config.delimiter = analyzer.detectDelimiter(data);
-        }
-        if(this._config.quotes === 'auto') {
-            this._config.quotes = analyzer.detectQuotes(data);
-        }
+        if(this._config.delimiter === 'auto') this._config.delimiter = analyzer.detectDelimiter(data);
+        if(this._config.quotes === 'auto') this._config.quotes = analyzer.detectQuotes(data);
+        if(this._config.escape === 'auto') this._config.escape = this._config.quotes;
 
         this._parseText(data);
     }
@@ -135,7 +138,12 @@ export default class CsvHeroParser {
      */
     _checkComment(data, i, character) {
         if(this._config.comment === character && i === this._status.lineStart + 1) {
-            i += data.indexOf(this._config.newLine, i) - i - 1 + this._config.newLine.length;
+            let nextIndex = data.indexOf(this._config.newLine, i);
+            if(nextIndex !== -1) {
+                i += nextIndex - i - 1 + this._config.newLine.length;
+            } else {
+                i = data.length;
+            }
             this._status.currentRow = [];
             this._status.currentField = '';
             this._status.lineStart = i;

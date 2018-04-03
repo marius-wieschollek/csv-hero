@@ -1,6 +1,6 @@
 {
   "name": "csv-hero",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A powerful CSV parser",
   "main": "dist/csv-hero.js",
   "scripts": {

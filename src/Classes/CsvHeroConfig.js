@@ -198,7 +198,7 @@ export default class CsvHeroConfig {
 
     /**
      *
-     * @returns {string}
+     * @returns {string|null}
      */
     get workerUrl() {
         return this._config.workerUrl;
