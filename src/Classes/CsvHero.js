@@ -10,7 +10,7 @@ export default class CsvHero {
         this._isWorker = typeof WorkerGlobalScope !== 'undefined';
         this._isBrowser = typeof document !== 'undefined';
         if (!this._isWorker && this._isBrowser) {
-            this._workerUrl = document.currentScript.src;
+            this._workerUrl = document.currentScript !== null ? document.currentScript.src:null;
         } else if(this._isWorker) {
             self.onmessage = (event) => {
                 let config = new CsvHeroConfig(event.data.config);
