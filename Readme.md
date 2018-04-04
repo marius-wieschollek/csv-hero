@@ -1,5 +1,5 @@
-# CSV Hero - The
-![CSV Hero](https://github.com/marius-wieschollek/csv-hero/raw/master/demo/CsvHero.svg)
+# CSV Hero - The powerful CSV parser
+![CSV Hero](https://raw.githubusercontent.com/marius-wieschollek/csv-hero/master/docs/CsvHero.svg)
 
 CSV Hero will save your day and handle all the CSV files you have to parse!
 CSV Hero can parse your csv files even when no one else can.
@@ -16,11 +16,15 @@ Here is what CSV Hero can do for you:
 
 ## Installation
 Install with NPM
-```
+```bash
 npm i csv-hero
 ```
-or build from source
+or include the compiled file
+```html
+<script src="https://cdn.rawgit.com/marius-wieschollek/csv-hero/master/dist/csv-hero.js"></script>
 ```
+or build from source
+```bash
 git clone https://github.com/marius-wieschollek/csv-hero.git
 cd csv-hero
 npm install

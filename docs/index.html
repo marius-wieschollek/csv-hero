@@ -14,9 +14,9 @@
         }
 
         img {
-            display: block;
-            margin: 0 auto 15px;
-            width: 256px;
+            display : block;
+            margin  : 0 auto 15px;
+            width   : 256px;
         }
 
         table {
@@ -122,19 +122,32 @@
         #result {
             margin-top : 2em;
         }
+
+        #try > a {
+            text-decoration : none;
+            color           : #4b6584;
+            font-weight     : lighter;
+        }
+
+        #try > a:hover {
+            font-weight     : bold;
+        }
     </style>
 </head>
 <body>
 
 <h1>Welcome to CSV Hero</h1>
-<p>
+<p style="text-align: center">
     <img src="CsvHero.svg" alt="">
     CSV Hero will save your day and handle all the CSV files you have to parse!
     <br>CSV Hero can parse your csv files even when no one else can.
-    <br>Feel free to try it out below.
 </p>
 
-<h1 id="try">Try it out</h1>
+<h1 id="try">
+    <span>Try it out</span>
+    | <a href="https://github.com/marius-wieschollek/csv-hero#installation" target="_blank">Use It</a>
+    | <a href="https://github.com/marius-wieschollek/csv-hero#parser-options" target="_blank">Read the Docs</a>
+</h1>
 <div class="tab-1">
     <form id="csv-hero-input">
         <table>
@@ -261,26 +274,26 @@
 </div>
 
 <script>
-    document.getElementById('csv-hero-config').addEventListener('submit', function(e) {
+    document.getElementById('csv-hero-config').addEventListener('submit', function (e) {
         e.preventDefault();
 
         let input  = getInput(),
             config = getConfig();
 
-        for(let i = 0; i < input.length; i++) {
+        for (let i = 0; i < input.length; i++) {
             CsvHero.parse(input[i], config)
-                   .then(ParserResult)
-                   .catch(ParserResult);
+                .then(ParserResult)
+                .catch(ParserResult);
         }
     }, false);
 
-    document.getElementById('input-type').addEventListener('change', function(e) {
+    document.getElementById('input-type').addEventListener('change', function (e) {
         e.preventDefault();
         updateInputType();
     }, false);
 
     function updateInputType() {
-        document.querySelectorAll('#option-url, #option-file, #option-text').forEach(function(el) {
+        document.querySelectorAll('#option-url, #option-file, #option-text').forEach(function (el) {
             el.style.display = 'none';
         });
         let type = document.getElementById('input-type').value;
@@ -292,20 +305,20 @@
     function getConfig() {
         let form   = document.forms[1],
             config = {};
-        for(let i = 0; i < form.length; i++) {
+        for (let i = 0; i < form.length; i++) {
             let field = form[i];
-            if(!field.name) continue;
+            if (!field.name) continue;
 
-            if(field.type === 'checkbox') {
+            if (field.type === 'checkbox') {
                 config[field.name] = field.checked;
-            } else if(field.type === 'number') {
+            } else if (field.type === 'number') {
                 config[field.name] = parseInt(field.value);
             } else {
                 config[field.name] = field.value;
             }
         }
 
-        if(config.fieldMapping.length !== 0) config.fieldMapping = config.fieldMapping.split(',');
+        if (config.fieldMapping.length !== 0) config.fieldMapping = config.fieldMapping.split(',');
 
         return config;
     }
@@ -313,7 +326,7 @@
     function getInput() {
         let type = document.getElementById('input-type').value;
 
-        if(type === 'file') {
+        if (type === 'file') {
             return document.getElementById('input-file').files;
         }
         return [document.getElementById(`input-${type}`).value];
@@ -343,8 +356,8 @@
 
         function createConfigSource() {
             let html = '';
-            for(let key in result.config) {
-                if(!result.config.hasOwnProperty(key)) continue;
+            for (let key in result.config) {
+                if (!result.config.hasOwnProperty(key)) continue;
                 let value = JSON.stringify(result.config[key]);
                 html += `<tr><td class="key">${key}</td><td class="value">${value}</td></tr>`;
             }
@@ -354,18 +367,18 @@
         function createDataSource() {
 
             let header = '<th>#</th>', data = '';
-            if(result.data.length > 0) {
-                for(let i in result.data[0]) {
-                    if(result.data[0].hasOwnProperty(i)) header += `<th>${i}</th>`;
+            if (result.data.length > 0) {
+                for (let i in result.data[0]) {
+                    if (result.data[0].hasOwnProperty(i)) header += `<th>${i}</th>`;
                 }
             }
 
-            for(let i = 0; i < result.data.length; i++) {
+            for (let i = 0; i < result.data.length; i++) {
                 let line = result.data[i],
                     html = '';
 
-                for(let i in line) {
-                    if(!line.hasOwnProperty(i)) continue;
+                for (let i in line) {
+                    if (!line.hasOwnProperty(i)) continue;
                     let value = line[i]
                         .replace(/&/g, '&amp;')
                         .replace(/</g, '&lt;')
@@ -383,12 +396,13 @@
         }
 
         function createErrorSource() {
-            if(result.errors.length === 0) return '';
+            if (result.errors.length === 0) return '';
 
             let html = '';
-            for(let i = 0; i < result.errors.length; i++) {
+            for (let i = 0; i < result.errors.length; i++) {
                 let error = result.errors[i];
-                html += `<tr><td class="index">${i + 1}</td><td>${error.name}</td><td>${error.message}</td><td>${error.line}</td><td>${error.character}</td></tr>`;
+                html +=
+                    `<tr><td class="index">${i + 1}</td><td>${error.name}</td><td>${error.message}</td><td>${error.line}</td><td>${error.character}</td></tr>`;
             }
 
             return `<div class="errors"><h3>Errors</h3><div class="data-table"><table><tbody>
