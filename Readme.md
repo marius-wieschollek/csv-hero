@@ -1,5 +1,5 @@
 # CSV Hero - The powerful CSV parser
-![CSV Hero](https://raw.githubusercontent.com/marius-wieschollek/csv-hero/master/docs/CsvHero.svg)
+![CSV Hero](https://marius-wieschollek.github.io/csv-hero/CsvHero.svg)
 
 CSV Hero will save your day and handle all the CSV files you have to parse!
 CSV Hero can parse your csv files even when no one else can.
@@ -13,6 +13,7 @@ Here is what CSV Hero can do for you:
 - Work in the background as Worker
 - Detect numbers and boolean values
 - Bring no dependencies
+- [Try it out](https://marius-wieschollek.github.io/csv-hero/)
 
 ## Installation
 Install with NPM
