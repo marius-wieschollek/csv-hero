@@ -1,4 +1,4 @@
 .idea
 node_modules
-demo
+docs
 webpack.config.js
