@@ -1,3 +1,4 @@
+import CsvHeroUtils from '@js/CsvHeroUtils';
 import CsvHeroConfig from '@js/CsvHeroConfig';
 import CsvHeroParser from '@js/CsvHeroParser';
 import CsvHeroFileStreamer from '@js/CsvHeroFileStreamer';
@@ -7,9 +8,10 @@ export default class CsvHero {
 
     constructor() {
         this._isWorker = typeof WorkerGlobalScope !== 'undefined';
-        if (!this._isWorker) {
+        this._isBrowser = typeof document !== 'undefined';
+        if (!this._isWorker && this._isBrowser) {
             this._workerUrl = document.currentScript.src;
-        } else {
+        } else if(this._isWorker) {
             self.onmessage = (event) => {
                 let config = new CsvHeroConfig(event.data.config);
                 CsvHero._runLocal(event.data.file, config, self.postMessage, self.postMessage);
@@ -28,10 +30,11 @@ export default class CsvHero {
         return new Promise(async (resolve, reject) => {
             let config = new CsvHeroConfig(userConfig);
 
-            if (config.worker && !this._isWorker) {
+            if (config.worker && !this._isWorker && this._isBrowser) {
                 this._runWorker(file, config, resolve, reject);
             } else {
-                CsvHero._runLocal(file, config, resolve, reject);
+                CsvHero._runLocal(file, config, resolve, reject)
+                    .catch(reject);
             }
         });
     }
@@ -46,8 +49,10 @@ export default class CsvHero {
      * @private
      */
     _runWorker(file, config, success, fail) {
-        let worker = new Worker(config.workerUrl !== null ? config.workerUrl:this._workerUrl);
+        let workerUrl = config.workerUrl !== null ? config.workerUrl:this._workerUrl;
+        if(!workerUrl) throw new Error('Worker URL missing');
 
+        let worker = new Worker(workerUrl);
         worker.onmessage = (event) => {
             let result = event.data;
             result.hasErrors && !result.config.ignoreErrors ? fail(result):success(result);
@@ -97,7 +102,7 @@ export default class CsvHero {
      * @returns {CsvHeroFileStreamer}
      */
     static _getStreamer(file, config) {
-        if (file instanceof File) {
+        if (CsvHeroUtils.getEnv().File && file instanceof File) {
             return new CsvHeroFileStreamer(file, config);
         }
         return new CsvHeroTextStreamer(file, config);

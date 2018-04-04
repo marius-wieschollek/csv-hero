@@ -1,4 +1,5 @@
 import CsvHeroDataAnalyzer from '@js/CsvHeroDataAnalyzer';
+import CsvHeroUtils from "@js/CsvHeroUtils";
 
 export default class CsvHeroParser {
 
@@ -75,10 +76,10 @@ export default class CsvHeroParser {
      * @private
      */
     _logError(error) {
-        if(error instanceof ProgressEvent) {
+        if(CsvHeroUtils.getEnv().ProgressEvent && error instanceof ProgressEvent) {
             error = error.target.error;
         }
-        if(error instanceof Error || error instanceof DOMError) {
+        if(error instanceof Error || CsvHeroUtils.getEnv().DOMError && error instanceof DOMError) {
             error = {
                 name   : error.name,
                 message: error.message

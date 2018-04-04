@@ -22,7 +22,7 @@ npm i csv-hero
 ```
 or include the compiled file
 ```html
-<script src="https://cdn.rawgit.com/marius-wieschollek/csv-hero/master/dist/csv-hero.js"></script>
+<script src="https://cdn.rawgit.com/marius-wieschollek/csv-hero/master/dist/csv-hero.web.js"></script>
 ```
 or build from source
 ```bash
