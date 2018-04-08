@@ -88,6 +88,7 @@ export default class CsvHeroParser {
         if(!error.name) error.name = 'ParserError';
         if(!error.message || !error.message.length) error.message = error.name;
         if(!error.character) error.character = this._status.currentCharacter - this._status.lineStart - 1;
+        if(error.character < 0) error.character = 0;
         error.line = this._status.lineCount;
 
         this._errors.push(error);
@@ -210,7 +211,7 @@ export default class CsvHeroParser {
                 } else {
                     this._status.stash += this._config.quotes;
                     this._status.hasQuotesPending = true;
-                    this._status.waitForDelimiter = true;
+                    if(!this._config.strictEndingQuotes) this._status.waitForDelimiter = true;
                 }
             } else {
                 this._status.currentField += this._config.escape + this._config.quotes;
@@ -345,11 +346,15 @@ export default class CsvHeroParser {
         let row = this._status.currentRow;
         this._status.currentRow = [];
         this._status.lineStart = pointer;
-        this._status.lineCount++;
 
         if(this._config.skipEmptyRows && (row.length === 0 || row.length === 1 && row[0].length === 0)) return;
-        if(this._isEmptyFieldRow(row)) return;
+        if(this._isEmptyFieldRow(row)) {
+            this._status.lineCount++;
+            return;
+        }
+
         this._checkRowSize(row);
+        this._status.lineCount++;
         if(this._checkFirstLine(row)) return;
         this._data.push(this._mapFields(row));
     }

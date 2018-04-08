@@ -66,6 +66,7 @@ CsvHero.parse('Easy,as,123')
 | encoding | string | `UTF-8` | If you pass a file to CSV Hero, you can specify the encoding. |
 | strictSpaces | boolean | `true` | Defines how CSV Hero handles spaces before the first and after the last quote in a field. See [Strict Spaces Option](#strict-spaces-option) for details. |
 | strictQuotes | boolean | `true` | Defines how CSV Hero handles quotes. If it is disabled, will try to detect badly escaped quotes. See [Strict Quotes Option](#strict-quotes-option) for details. |
+| strictEndingQuotes | boolean | `false` | Enable or disable the detection of badly escaped quotes at the end of a field if `strictQuotes` is disabled. See [Strict Ending Quotes Option](#strict-ending-quotes-option) for details. |
 | strictRows | boolean | `false` | If this option is enabled, CSV Hero will guarantee a minimum row size and report an error for rows that have too many columns. |
 | rowSize | number | `-1` | Sets the deisred row size for `strictRows`. If the value is `-1`, the size of the first row will be used as reference. The detection will ignore `skipHeader`. |
 | maxRows | number | `-1` | If set to any value except -1, CSV Hero will parse after the given amount of rows were parsed. `skipEmptyRows`, `skipEmptyFieldRows` and `skipHeader` will be respected. |
@@ -117,7 +118,7 @@ With `strictQuotes` enabled, an error will be reported and the result will look 
 
 | Column 1 | Column 2 |
 | --- | --- |
-| `Oops, some bad "Quotes","What could go wrong?` | |
+| `Oops, some bad "Quotes"!,"What could go wrong?` | |
 
 With `strictQuotes` disabled, the result will look like this:
 
@@ -125,7 +126,9 @@ With `strictQuotes` disabled, the result will look like this:
 | --- | --- |
 | `Oops, some bad "Quotes"` | `What could go wrong?` |
 
-With `strictQuotes` disabled, CSV Hero will try to determine if a quote is used as field start, content ur in combination with the delimiter as field end.
+
+## Strict Ending Quotes
+With `strictQuotes` disabled, CSV Hero will try to determine if a quote is used as field start, content or in combination with the delimiter as field end.
 However especially the field endings are very hard to detect, and it may happen that CSV Hero detects the quote + delimiter combination inside a field.
 See this example:
 
@@ -142,4 +145,11 @@ The commas in the json string will look exactly like a field delimiter and there
 | `{"well":"that` | `sucks":"now"}` |
 | `{"well":"that"` | `"sucks":"now"}` |
 
-We tried our best, but sometimes even a hero can't save you from CSV hell. Therefore we recommend you use this option with caution.
+Enabling `strictEndingQuotes` will disable the check for bad quotes at the end of a field and therefore guarantee that proper csv parses correctly:
+
+| JSON | |
+| --- | --- |
+| `{"well":"that` | `sucks":"now"}` |
+| `{"well":"that","sucks":"now"}` |
+
+However, bad quotes at the end will no longer be detected. Sometimes even a hero can't save you from CSV hell.

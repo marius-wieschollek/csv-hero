@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Csv Hero Demo</title>
-    <script src="https://cdn.rawgit.com/marius-wieschollek/csv-hero/master/dist/csv-hero.web.js"></script>
+    <script src="../dist/csv-hero.web.js"></script>
     <style>
         body {
             max-width   : 960px;
@@ -56,6 +56,14 @@
         td.value {
             font-family : monospace;
             text-align  : right;
+        }
+
+        tr {
+            background : #f5f6fa;
+        }
+
+        tr:hover > td {
+            background: #2bcbba80;
         }
 
         .data-table {
@@ -217,6 +225,10 @@
             <tr>
                 <td><label for="config-strictQuotes">Strict quote checking</label></td>
                 <td><input name="strictQuotes" id="config-strictQuotes" type="checkbox" checked/></td>
+            </tr>
+            <tr>
+                <td><label for="config-strictEndingQuotes">Strict ending quote checking</label></td>
+                <td><input name="strictEndingQuotes" id="config-strictEndingQuotes" type="checkbox" /></td>
             </tr>
             <tr>
                 <td><label for="config-strictRows">Strict row sizes</label></td>

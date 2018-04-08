@@ -104,6 +104,14 @@ export default class CsvHeroConfig {
      *
      * @returns {boolean}
      */
+    get strictEndingQuotes() {
+        return this._config.strictEndingQuotes;
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     */
     get strictRows() {
         return this._config.strictRows;
     }
@@ -234,6 +242,7 @@ export default class CsvHeroConfig {
             encoding          : 'UTF-8',
             strictSpaces      : true,
             strictQuotes      : true,
+            strictEndingQuotes: false,
             strictRows        : false,
             trimFields        : false,
             castTypes         : false,
