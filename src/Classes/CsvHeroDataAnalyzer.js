@@ -38,7 +38,8 @@ export default class CsvHeroDataAnalyzer {
      * @returns {string}
      */
     detectDelimiter(data) {
-        let sample = data.substr(0, data.indexOf(this._config.newLine));
+        let lineStart = data.indexOf(this._config.newLine) + this._config.newLine.length,
+            sample = data.substr(0, data.indexOf(this._config.newLine, lineStart));
 
         return this._findBestPattern(sample, this._delimiters, 'delimiter', ',');
     }
@@ -49,7 +50,8 @@ export default class CsvHeroDataAnalyzer {
      * @returns {string}
      */
     detectQuotes(data) {
-        let sample = data.substr(0, data.indexOf(this._config.newLine));
+        let lineStart = data.indexOf(this._config.newLine) + this._config.newLine.length,
+            sample = data.substr(0, data.indexOf(this._config.newLine, lineStart));
 
         return this._findBestPattern(sample, this._quotes, 'quotes', '"');
     }
@@ -58,13 +60,15 @@ export default class CsvHeroDataAnalyzer {
      *
      * @param text
      * @param patterns
+     * @param type
+     * @param fallback
      * @returns {string}
      * @private
      */
-    _findBestPattern(text, patterns) {
+    _findBestPattern(text, patterns, type, fallback) {
         let search = CsvHeroDataAnalyzer._processPatterns(patterns);
         this._gatherPatternStatistics(text, search);
-        return CsvHeroDataAnalyzer._determineBestMatch(search);
+        return CsvHeroDataAnalyzer._determineBestMatch(search, type, fallback);
     }
 
     /**
@@ -78,7 +82,7 @@ export default class CsvHeroDataAnalyzer {
             search.push(
                 {
                     value : patterns[i],
-                    regexp: new RegExp(patterns[i], 'g'),
+                    regexp: new RegExp(patterns[i].replace('|', '\\|'), 'g'),
                     min   : -1,
                     max   : -1,
                     sum   : 0
@@ -115,20 +119,30 @@ export default class CsvHeroDataAnalyzer {
     /**
      *
      * @param {Array} search
+     * @param type
+     * @param fallback
      * @returns {string}
      * @private
      */
-    static _determineBestMatch(search) {
-        let choice = '', span = -1, avg = -1;
+    static _determineBestMatch(search, type, fallback) {
+        let choice = '', span = -1, minZero = true;
         for(let i = 0; i < search.length; i++) {
-            let currentSpan = search[i].max - search[i].min;
+            let currentSpan = search[i].max - search[i].min,
+            spanAccepted = span > currentSpan || span === -1;
 
-            if(span > currentSpan || span === -1) {
+            if(search[i].max !== 0 &&
+               (minZero && search[i].min !== 0 || (search[i].min !== 0 && spanAccepted) || (minZero && spanAccepted))
+            ) {
                 choice = search[i].value;
                 span = currentSpan;
+                minZero = search[i].min === 0;
             }
         }
 
-        return choice;
+        if(span !== -1) return choice;
+
+        console.warn(`Could not determine ${type} automatically. Using ${fallback}`);
+
+        return fallback;
     }
 }
