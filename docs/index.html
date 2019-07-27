@@ -380,7 +380,6 @@
         }
 
         function createDataSource() {
-
             let header = '<th>#</th>', data = '';
             if (result.data.length > 0) {
                 for (let i in result.data[0]) {
@@ -397,7 +396,10 @@
                     let value = line[i]
                         .replace(/&/g, '&amp;')
                         .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;');
+                        .replace(/>/g, '&gt;')
+                        .replace(/\r\n/g, '<br>')
+                        .replace(/\n/g, '<br>')
+                        .replace(/\r/g, '<br>');
 
                     html += `<td><div>${value}</div></td>`;
                 }
