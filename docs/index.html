@@ -166,7 +166,7 @@
                     <select name="input-type" id="input-type">
                         <option value="file" selected>File</option>
                         <option value="text">Text</option>
-                        <option value="url">URL</option>
+                        <!--<option value="url">URL</option>-->
                     </select>
                 </td>
             </tr>
@@ -200,9 +200,9 @@
                 <td>
                     <select name="newLine" id="config-newLine">
                         <option value="auto" selected>auto</option>
-                        <option value="\n">\n</option>
-                        <option value="\r">\r</option>
-                        <option value="\r\n">\r\n</option>
+                        <option value="n">\n</option>
+                        <option value="r">\r</option>
+                        <option value="rn">\r\n</option>
                     </select>
                 </td>
             </tr>
@@ -331,6 +331,9 @@
         }
 
         if (config.fieldMapping.length !== 0) config.fieldMapping = config.fieldMapping.split(',');
+        if(config.newLine && config.newLine !== 'auto') {
+            config.newLine = {n:'\n', r:'\r', rn:'\r\n'}[config.newLine]
+        }
 
         return config;
     }
